@@ -1,3 +1,12 @@
+import streamlit as st
+
+# ✅ Streamlit 페이지 설정
+st.set_page_config(page_title="MBTI 과학자 친구 & 진로 추천", page_icon="🧑‍🔬")
+
+st.title("🧑‍🔬 MBTI로 과학자 친구를 만나고 이공계 진로도 알아보자!")
+st.subheader("너의 성격 유형에 따라 잘 맞는 과학자와 진로를 추천해줄게 😊")
+
+# ✅ MBTI 전체 16유형 + 과학자 + 이공계 진로 데이터
 scientist_data = {
     "INTJ": {
         "name": "스티븐 호킹",
@@ -192,3 +201,21 @@ scientist_data = {
         }
     }
 }
+
+# ✅ MBTI 선택
+selected_mbti = st.selectbox("👉 너의 MBTI를 선택해보세요", list(scientist_data.keys()))
+
+# ✅ 결과 출력
+if selected_mbti:
+    data = scientist_data[selected_mbti]
+    st.markdown(f"### {data['name']} {data['emoji']}")
+    st.write(f"**설명:** {data['desc']}")
+    st.markdown("**성격 키워드:** " + ", ".join(data["keywords"]))
+
+    st.markdown("---")
+    st.markdown("### 🎯 어울리는 이공계 진로 추천:")
+    for job in data["jobs"]:
+        with st.expander(f"🔍 {job} 자세히 보기"):
+            st.write(data["job_details"].get(job, "상세 정보가 준비 중이에요."))
+
+    st.success("🎉 너와 잘 어울리는 과학자 친구와 진로를 찾았어요!")
